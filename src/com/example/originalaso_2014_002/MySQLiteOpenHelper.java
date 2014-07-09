@@ -1,4 +1,5 @@
 package com.example.originalaso_2014_002;
+
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteCursor;
@@ -32,7 +33,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper{
 		}
 		return;
 	}
-	public String selectRandomHitokoto(SQLiteDatabase db){
+	public SQLiteCursor selectRandomHitokoto(SQLiteDatabase db){
 		
 		String rtString = null;
 		
@@ -44,11 +45,42 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper{
 				rtString = cursor.getString(1);
 			}
 			cursor.close();
+			
+			
 		} catch(SQLException e){
 			Log.e("ERROR",e.toString());
 		}finally{
 			
+			SQLiteCursor cursor =null;
+			
+			String sqlstr = "SELECT _id,phrase From Hitokoto ORDER BY _id;";
+			try{
+				cursor = (SQLiteCursor)db.rawQuery(sqlstr,null);
+				if(cursor.getCount()!=0){
+					cursor.moveToFirst();
+				}
+			}catch (SQLException e){
+				Log.e("EROR",e.toString());
+			}finally{
+				
+			}
+			return cursor;
+			
+		  }
+		public void deleteHitokoto(SQLiteDatabase db, int id){
+			String sqlstr ="DELETE FROM Hitokoto _id = " +id+ ";";
+			try{
+				db.beginTransaction();
+				db.execSQL(sqlstr);
+				db.setTransactionSuccessful();
+				catch(SQLException e){
+					Log.e("ERROR",e.toString());
+				}finally{
+					db.endTransaction();
+				}
+			}
 		}
+		
 		return rtString;
 	}
 }

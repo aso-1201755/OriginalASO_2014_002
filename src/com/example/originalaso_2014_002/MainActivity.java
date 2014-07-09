@@ -1,7 +1,7 @@
 package com.example.originalaso_2014_002;
 
 import android.app.Activity;
-import android. content.Intent;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
@@ -23,15 +23,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
 	@Override
 	protected void onResume() {
 		// TODO 自動生成されたメソッド・スタブ
+
 		
-		Intent intent=null;
-		switch(v getid()){
-			case R.id.btnENTRY;
-			EditText etv = (EditText)findViewById(R.id.edtMsg);
-			String inputMsg = etv.getText().toString();
-			
-			if(inputMsg!=null&& !inputMsg.isEmpty()){
-		}
+		
 			super.onResume();
 
 			Button btnENTRY = (Button)findViewById(R.id.btnENTRY);
@@ -58,8 +52,38 @@ public class MainActivity extends Activity implements View.OnClickListener{
 	@Override
 	public void onClick(View v) {
 		// TODO 自動生成されたメソッド・スタブ
+		Intent intent = null;
+		switch(v.getId()){
+			case R.id.btnENTRY:
+				EditText etv = (EditText)findViewById(R.id.edtMsg);
+				String inputMsg = etv.getText().toString();
+	
+				if(inputMsg!=null&& !inputMsg.isEmpty()){
+	
+					helper.insertHitokoto(sdb,inputMsg);
+					etv.setText("");
+	
+				}
+			break;
+			case R.id.btnMAINTE:
+	
+				intent = new Intent(MainActivity.this,MaintenanceActivity.class);
+	
+				startActivity(intent);
+			break;
 
-	}
+			case R.id.btnCHECK:
+	
+				String strHitokoto = helper.selectRandomHitokoto(sdb);
+	
+				intent = new Intent(MainActivity.this,MsgActivity.class);
+	
+				intent.putExtra("hitokoto",strHitokoto);
+	
+				startActivity(intent);
+			break;
+			}
+		}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

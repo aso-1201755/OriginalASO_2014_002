@@ -1,8 +1,11 @@
 package com.example.originalaso_2014_002;
 
-import android.app.Activity;
-import android.os.Bundle;
 
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.TextView;
 public class MsgActivity extends Activity {
 
 	@Override
@@ -12,4 +15,24 @@ public class MsgActivity extends Activity {
 		setContentView(R.layout.hitokoto);
 	}
 
+	@Override
+	protected void onResume() {
+		// TODO 自動生成されたメソッド・スタブ
+		super.onResume();
+
+		Intent intent = this.getIntent();
+
+		String strHitokoto = intent.getStringExtra("hitokoto");
+
+
+		TextView txvHITOKOTO = (TextView)findViewById(R.id.txvHITOKOTO);
+		txvHITOKOTO.setText(strHitokoto);
+	}
+
+  public static void main(String[] args){
+	  // TODO 自動作成されたメゾット・クラス
+
+  }
 }
+
+
