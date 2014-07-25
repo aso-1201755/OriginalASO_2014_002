@@ -15,7 +15,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper{
 		db.execSQL("CREATE TABLE IF NOT EXISTS"+
 	"Hitokoto(_id INTEGER PRIMARY KEY AUTOINCREMENT NOT MULL,phrase TEXT)");
 	}
-	
+
 	public void onUpgrade(SQLiteDatabase db,int oldVersion,int newVersion){
 		db.execSQL("drop table Hitokoto");
 		onCreate(db);
@@ -34,38 +34,25 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper{
 		return;
 	}
 	public SQLiteCursor selectRandomHitokoto(SQLiteDatabase db){
-		
-		String rtString = null;
-		
-		String sqlst = "SELECT_id,phrase From Hitokoto ORDER BY RANDOM();";
+
+		SQLiteCursor cursor = null;
+
+		String sqlst = "SELECT_id,phrase From Hitokoto ORDER BY _id;";
 		try{
-			SQLiteCursor cursor = (SQLiteCursor)db.rawQuery(sqlst,null);
+			cursor = (SQLiteCursor)db.rawQuery(sqlst,null);
 			if(cursor.getCount()!=0){
 				cursor.moveToFirst();
-				rtString = cursor.getString(1);
 			}
 			cursor.close();
-			
-			
+
+
 		} catch(SQLException e){
 			Log.e("ERROR",e.toString());
 		}finally{
-			
-			SQLiteCursor cursor =null;
-			
-			String sqlstr = "SELECT _id,phrase From Hitokoto ORDER BY _id;";
-			try{
-				cursor = (SQLiteCursor)db.rawQuery(sqlstr,null);
-				if(cursor.getCount()!=0){
-					cursor.moveToFirst();
-				}
-			}catch (SQLException e){
-				Log.e("EROR",e.toString());
-			}finally{
-				
-			}
+		}
+
 			return cursor;
-			
+
 		  }
 		public void deleteHitokoto(SQLiteDatabase db, int id){
 			String sqlstr ="DELETE FROM Hitokoto _id = " + id + ";";
@@ -73,14 +60,11 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper{
 				db.beginTransaction();
 				db.execSQL(sqlstr);
 				db.setTransactionSuccessful();
-				catch(SQLException e){
+			}catch(SQLException e){
 					Log.e("ERROR",e.toString());
 				}finally{
 					db.endTransaction();
 				}
 			}
-		}
-		
-		return rtString;
 	}
-}
+
